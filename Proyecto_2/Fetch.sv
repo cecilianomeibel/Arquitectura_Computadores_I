@@ -28,8 +28,8 @@ module Fetch
 	 
 	 Instruction_memory im (
 	 .reset(reset),
-	 .A(PCF),
-	 .RD(InstrF));
+	 .a(PCF),
+	 .rd(InstrF));
 	 
 	 
 	 Adder_PC adder(
