@@ -1,9 +1,9 @@
 module Fetch 
 (  
 	 input logic clk,reset,
-	 input PCSrcE,
-	 input [31:0] PCTargetE,
-	 output [31:0] InstrD, PCD,PCPlus4D
+	 input logic PCSrcE,
+	 input logic [31:0] PCTargetE,
+	 output logic [31:0] InstrD, PCD,PCPlus4D
 );
    
 	 wire [31:0] PC_F,PCF,PCPlus4F,InstrF;
@@ -26,7 +26,7 @@ module Fetch
 	 .pc_next(PCF));
 	 
 	 
-	 Instruction_memory im (
+	 Instruction_Memory im (
 	 .reset(reset),
 	 .a(PCF),
 	 .rd(InstrF));
@@ -59,7 +59,5 @@ module Fetch
 	 assign InstrD = InstrF_reg;
 	 assign PCD = PCF_reg;
 	 assign PCPlus4D = PCPlus4F_reg;
-	 
-	 
 	 
 endmodule
