@@ -12,7 +12,7 @@ module Fetch
 	 
 	 // Se llaman a los módulos que componen al Fetch
 	 
-	 PC_mux pc_mux(
+	 Mux_2_1 pc_mux(
 	 .a(PCPlus4F),
 	 .b(PCTargetE),
 	 .s(PCSrcE),
@@ -32,7 +32,7 @@ module Fetch
 	 .rd(InstrF));
 	 
 	 
-	 Adder_PC adder(
+	 Adder adder_pc (
 	 .a(PCF),
 	 .b(32'h4),
 	 .c(PCPlus4F));
