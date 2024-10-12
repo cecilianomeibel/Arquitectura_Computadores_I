@@ -2,9 +2,9 @@ module Fetch_tb();
   
 	  logic clk,reset;
 	  logic  PCSrcE;
-	  logic [11:0] PCTargetE;
-	  logic [16:0] InstrD;
-	  logic [11:0] PCD,PCPlus1D;
+	  logic [14:0] PCTargetE;
+	  logic [19:0] InstrD;
+	  logic [14:0] PCD,PCPlus1D;
 	 
 	 
 	 //Se instancia el módulo
@@ -28,7 +28,7 @@ module Fetch_tb();
 	 
 	 reset = 1'b1;
 	 PCSrcE = 1'b0;
-	 PCTargetE = 12'h0;
+	 PCTargetE = 15'h0;
 	 
 	 #40;
 	 $finish;

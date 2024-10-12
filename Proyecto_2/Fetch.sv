@@ -2,14 +2,14 @@ module Fetch
 (  
 	 input logic clk,reset,
 	 input logic PCSrcE,
-	 input logic [11:0] PCTargetE,
-	 output logic [16:0] InstrD,
-	 output logic [11:0] PCD,PCPlus1D
+	 input logic [14:0] PCTargetE,
+	 output logic [19:0] InstrD,
+	 output logic [14:0] PCD,PCPlus1D
 );
 
-	 logic [16:0] InstrF;
-	 logic [11:0] PC_F, PCF,PCPlus1F;
-	 reg [40:0] fetch_reg;   //InstrF_reg, PCPlus4F_reg, PCF_reg;
+	 logic [19:0] InstrF;
+	 logic [14:0] PC_F, PCF,PCPlus1F;
+	 reg [49:0] fetch_reg;   //InstrF_reg, PCPlus4F_reg, PCF_reg;
 	 
 	 
 	 // Se llaman a los módulos que componen al Fetch
@@ -36,7 +36,7 @@ module Fetch
 	 
 	 Adder adder_pc (
 	 .a(PCF),
-	 .b(12'h1),
+	 .b(15'h1),
 	 .c(PCPlus1F));
 	 
 	 
@@ -44,13 +44,13 @@ module Fetch
 	 
 	 always @(posedge clk or negedge reset)begin
 	    if (reset == 1'b0)begin
-		     fetch_reg    <= 45'h0;
+		     fetch_reg    <= 50'h0;
 
 		 end
 		 else begin
-		   fetch_reg [16:0]  <= InstrF;
-			fetch_reg [28:17] <= PCF;
-		   fetch_reg [40:29] <= PCPlus1F;
+		   fetch_reg [19:0]  <= InstrF;
+			fetch_reg [34:20] <= PCF;
+		   fetch_reg [49:35] <= PCPlus1F;
 		   
 	    end		
 	 end	
@@ -58,8 +58,8 @@ module Fetch
 	 
 	 // Asignación de puertos de salida 
 	 
-	 assign InstrD = fetch_reg [16:0];
-	 assign PCD = fetch_reg [28:17];
-	 assign PCPlus1D = fetch_reg [40:29];
+	 assign InstrD = fetch_reg [19:0];
+	 assign PCD = fetch_reg [34:20];
+	 assign PCPlus1D = fetch_reg [49:35];
 	 
 endmodule
