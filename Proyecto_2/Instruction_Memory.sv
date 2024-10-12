@@ -1,12 +1,13 @@
 module Instruction_Memory(
        input logic reset,
-		 input logic [31:0] a,
-		 output logic [31:0] rd
+		 input logic [11:0] a,     //PCF
+		 output logic [16:0] rd   //instruccion
 );
 
-      reg [31:0] ROM [1023:0];
+      reg [16:0] ROM [511:0];
   
-      assign rd = (reset == 1'b0) ? {32{1'b0}} : ROM[a[31:2]];   //// Lee el dato en la direccion alineada "A"
+      assign rd = (reset == 1'b0) ? {17{1'b0}} : ROM[a];   // Lee el dato en la direccion alineada "A"
+		                                                     // Se hace PC+1, porque las instrucciones son de 17 bits y es un número primo, no es divisible en bytes
 
       initial begin
 		  
