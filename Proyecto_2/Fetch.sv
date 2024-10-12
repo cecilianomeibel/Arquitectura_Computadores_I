@@ -4,18 +4,18 @@ module Fetch
 	 input logic PCSrcE,
 	 input logic [11:0] PCTargetE,
 	 output logic [16:0] InstrD,
-	 output logic [11:0] PCD,PCPlus4D
+	 output logic [11:0] PCD,PCPlus1D
 );
 
 	 logic [16:0] InstrF;
-	 logic [11:0] PC_F, PCF,PCPlus4F;
+	 logic [11:0] PC_F, PCF,PCPlus1F;
 	 reg [40:0] fetch_reg;   //InstrF_reg, PCPlus4F_reg, PCF_reg;
 	 
 	 
 	 // Se llaman a los módulos que componen al Fetch
 	 
 	 Mux_2_1 pc_mux(
-	 .a(PCPlus4F),
+	 .a(PCPlus1F),
 	 .b(PCTargetE),
 	 .s(PCSrcE),
 	 .c(PC_F));
@@ -37,7 +37,7 @@ module Fetch
 	 Adder adder_pc (
 	 .a(PCF),
 	 .b(12'h1),
-	 .c(PCPlus4F));
+	 .c(PCPlus1F));
 	 
 	 
 	 // Fetch Stage Registers
@@ -50,7 +50,7 @@ module Fetch
 		 else begin
 		   fetch_reg [16:0]  <= InstrF;
 			fetch_reg [28:17] <= PCF;
-		   fetch_reg [40:29] <= PCPlus4F;
+		   fetch_reg [40:29] <= PCPlus1F;
 		   
 	    end		
 	 end	
@@ -60,6 +60,6 @@ module Fetch
 	 
 	 assign InstrD = fetch_reg [16:0];
 	 assign PCD = fetch_reg [28:17];
-	 assign PCPlus4D = fetch_reg [40:29];
+	 assign PCPlus1D = fetch_reg [40:29];
 	 
 endmodule

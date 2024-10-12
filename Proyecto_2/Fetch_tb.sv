@@ -4,7 +4,7 @@ module Fetch_tb();
 	  logic  PCSrcE;
 	  logic [11:0] PCTargetE;
 	  logic [16:0] InstrD;
-	  logic [11:0] PCD,PCPlus4D;
+	  logic [11:0] PCD,PCPlus1D;
 	 
 	 
 	 //Se instancia el módulo
@@ -16,7 +16,7 @@ module Fetch_tb();
 		 .PCTargetE(PCTargetE),
 		 .InstrD(InstrD),
 		 .PCD(PCD),
-		 .PCPlus4D(PCPlus4D)
+		 .PCPlus1D(PCPlus1D)
 	 );
 	 
 	 
