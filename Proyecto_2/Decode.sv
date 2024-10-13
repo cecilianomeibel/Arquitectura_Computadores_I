@@ -1,9 +1,9 @@
 module Decode (
        input logic clk, reset, 
 		 input RegWriteW,
-		 input [16:0] InstrD,          //Tamaño de instrucción
+		 input [19:0] InstrD,          //Tamaño de instrucción
 		 input [18:0] ResultW,        //Tamaño de registro
-		 input [11:0] PCD,PCPlus1D,
+		 input [14:0] PCD,
 		 input [4:0] RdW,            //Son 19 registros, 19 bits es 2^5
 		 
 		 output RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
@@ -11,8 +11,8 @@ module Decode (
        output [2:0] ALUControlE,            //Toma los 3 bits de operación en el opcode
        output [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
        //output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
-       output [11:0] PCE, PCPlus1E
-		 output [18:0] RDE
+       output [14:0] PCE,
+		 output [4:0] RDE   //Destino
 );     
          
        logic RegWriteD,MemWriteD,JumpD,BranchD,ALUSrcD;
@@ -23,7 +23,7 @@ module Decode (
        
 
 		 //Registro de Decode
-		 reg [111:0] decode_reg;
+		 reg [87:0] decode_reg;
 		 
 		
 		//Se llaman los módulos que componen a Decode
@@ -35,16 +35,16 @@ module Decode (
 			.MemWrite(MemWriteD),
 			.Jump(JumpD),
 			.Branch(BranchD),
-			.AluControl(AluControlD),
-			.AluSrc(AluSrcD),
+			.ALUControl(ALUControlD),
+			.ALUSrc(ALUSrcD),
 			.ImmSrc(ImmSrcD));
 		
 		
 		Register_File register_file(
 		   .clk(clk),
 			.reset(reset),
-		   .a1(InstrD[12:9]),   //Rf1 registro fuente1
-			.a2(InstrD[16:13]),  //Rf2 registro fuente2
+		   .a1(InstrD[14:10]),   //Rf1 registro fuente1
+			.a2(InstrD[19:15]),  //Rf2 registro fuente2
 			.a3(RdW),           // Señal de WB (en cual se va a escribir)
 			.wd3(ResultW),
 			.we3(RegWriteW),
@@ -55,7 +55,7 @@ module Decode (
 		
 		Extend extend(
 		   .ImmExt(ImmExtD),
-			.In(InstrD[16:5]),     //Tamaño por instrucción dontrol de flujo
+			.In(InstrD[19:5]),     //Tamaño por instrucción dontrol de flujo
 			.ImmSrc(ImmSrcD)
 		);
 		
@@ -64,7 +64,7 @@ module Decode (
 		
       always @(posedge clk or negedge reset) begin
         if(reset == 1'b0) begin
-            decode_reg <= 112'h0;
+            decode_reg <= 88'h0;
 
         end
         else begin
@@ -79,9 +79,9 @@ module Decode (
             decode_reg[30:12] <= RD1D; 
             decode_reg[49:31] <= RD2D; 
             decode_reg[68:50] <= ImmExtD;
-				decode_reg[80:69] <= PCD;
-				decode_reg[92:81] <= PCPlus1D;
-				decode_reg[111:93] <= InstrD[8:5];   //RDD
+				decode_reg[83:69] <= PCD;
+				decode_reg[88:84] <= InstrD[9:5]; //RDD
+				   
         end
     end
 
@@ -97,9 +97,8 @@ module Decode (
 	 assign RD1E = decode_reg[30:12];
     assign RD2E = decode_reg[49:31];
 	 assign ImmExtE = decode_reg[68:50];
-    assign PCE = decode_reg[80:69]; 
-    assign PCPlus4E = decode_reg[92:81];
-	 assign RDE = decode_reg [111:93];
+    assign PCE = decode_reg[83:69]; 
+    assign RDE = decode_reg[88:84];
 
 endmodule 
 
