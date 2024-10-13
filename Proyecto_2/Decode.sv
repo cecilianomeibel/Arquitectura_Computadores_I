@@ -1,29 +1,29 @@
 module Decode (
        input logic clk, reset, 
-		 input RegWriteW,
-		 input [19:0] InstrD,          //Tamaño de instrucción
-		 input [18:0] ResultW,        //Tamaño de registro
-		 input [14:0] PCD,
-		 input [4:0] RdW,            //Son 19 registros, 19 bits es 2^5
+		 input logic RegWriteW,
+		 input logic [19:0] InstrD,          //Tamaño de instrucción
+		 input logic [18:0] ResultW,        //Tamaño de registro
+		 input logic [14:0] PCD,
+		 input logic [4:0] RdW,            //Son 19 registros, 19 bits es 2^5
 		 
-		 output RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
-		 output ResultSrcE [1:0],
-       output [2:0] ALUControlE,            //Toma los 3 bits de operación en el opcode
-       output [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
+		 output logic RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
+		 output logic [1:0] ResultSrcE ,
+       output logic [2:0] ALUControlE,            //Toma los 3 bits de operación en el opcode
+       output logic [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
        //output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
-       output [14:0] PCE,
-		 output [4:0] RDE   //Destino
+       output logic [14:0] PCE,
+		 output logic [4:0] RDE   //Destino
 );     
          
        logic RegWriteD,MemWriteD,JumpD,BranchD,ALUSrcD;
 		 logic [1:0] ResultSrcD;
        logic [2:0] ALUControlD;                 //Toma los 3 bits de operación en el opcode (intermedio)
 		 logic [1:0] ImmSrcD;                    //Enable de Extend
-		 logic [18:0] RD1D, RD2D, ImmExtD; //Registros fuentes, inmediato (intermedios)
+		 logic [18:0] RD1D, RD2D, ImmExtD;      //Registros fuentes, inmediato (intermedios)
        
 
 		 //Registro de Decode
-		 reg [87:0] decode_reg;
+		 reg [86:0] decode_reg;
 		 
 		
 		//Se llaman los módulos que componen a Decode
@@ -54,9 +54,9 @@ module Decode (
 		
 		
 		Extend extend(
-		   .ImmExt(ImmExtD),
-			.In(InstrD[19:5]),     //Tamaño por instrucción dontrol de flujo
-			.ImmSrc(ImmSrcD)
+			.In(InstrD[19:5]),     //Tamaño por instrucción control de flujo
+			.ImmSrc(ImmSrcD),
+			.ImmExt(ImmExtD)
 		);
 		
 		
@@ -64,7 +64,7 @@ module Decode (
 		
       always @(posedge clk or negedge reset) begin
         if(reset == 1'b0) begin
-            decode_reg <= 88'h0;
+            decode_reg <= 87'h0;
 
         end
         else begin
@@ -75,12 +75,11 @@ module Decode (
             decode_reg[4] <= ALUSrcD;
             decode_reg[6:5] <= ResultSrcD; 
             decode_reg[9:7] <= ALUControlD;
-				decode_reg[11:10] <= ImmSrcD;
-            decode_reg[30:12] <= RD1D; 
-            decode_reg[49:31] <= RD2D; 
-            decode_reg[68:50] <= ImmExtD;
-				decode_reg[83:69] <= PCD;
-				decode_reg[88:84] <= InstrD[9:5]; //RDD
+            decode_reg[28:10] <= RD1D; 
+            decode_reg[47:29] <= RD2D; 
+            decode_reg[66:48] <= ImmExtD;
+				decode_reg[81:67] <= PCD;
+				decode_reg[86:82] <= InstrD[9:5]; //RDD
 				   
         end
     end
@@ -92,13 +91,13 @@ module Decode (
 	 assign JumpE = decode_reg[2];
 	 assign BranchE = decode_reg[3];
     assign ALUSrcE = decode_reg[4];
-    assign ResultSrcE =  decode_reg[6:5];
+    assign ResultSrcE = decode_reg[6:5];
     assign ALUControlE = decode_reg[9:7];
-	 assign RD1E = decode_reg[30:12];
-    assign RD2E = decode_reg[49:31];
-	 assign ImmExtE = decode_reg[68:50];
-    assign PCE = decode_reg[83:69]; 
-    assign RDE = decode_reg[88:84];
+	 assign RD1E = decode_reg[28:10];
+    assign RD2E = decode_reg[47:29];
+	 assign ImmExtE = decode_reg[66:48];
+    assign PCE = decode_reg[81:67]; 
+    assign RDE = decode_reg[86:82];
 
 endmodule 
 
