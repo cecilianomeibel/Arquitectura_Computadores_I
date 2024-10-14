@@ -30,7 +30,7 @@ module Control_Unit (
 		5'b00001:
 			begin
 			ImmSrc = 2'b01;
-			ALUControl = 3'b001;
+			ALUControl = 3'b000;
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -43,7 +43,7 @@ module Control_Unit (
 		5'b00010:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b010;
+			ALUControl = 3'b001;
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -56,7 +56,7 @@ module Control_Unit (
 		5'b00011:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b011;
+			ALUControl = 3'b010;
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -69,7 +69,7 @@ module Control_Unit (
 		5'b00100:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b100;
+			ALUControl = 3'b011;
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -82,7 +82,7 @@ module Control_Unit (
 		5'b00101:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b101;
+			ALUControl = 3'b100;
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -95,7 +95,7 @@ module Control_Unit (
 		5'b00110:
 			begin
 			ImmSrc = 2'b01;
-			ALUControl = 3'b110;
+			ALUControl = 3'b101;
 			ResultSrc = 2'b00;	
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -214,7 +214,7 @@ module Control_Unit (
 		5'b10001:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b010;   //RES
+			ALUControl = 3'b001;   //RES
 			ResultSrc = 2'b00;    // Con ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
@@ -261,5 +261,17 @@ module Control_Unit (
 			RegWrite = 1'b0;
 			ALUSrc = 1'b1;
 			end
+			
+	 default: 
+			begin  // Opcode not implemented
+         ImmSrc = 2'bxx;      
+			ALUControl = 3'bxxx;
+			ResultSrc = 2'bxx;
+			MemWrite = 1'bx;
+			Jump = 1'bx;
+			Branch = 1'b1;
+			RegWrite = 1'bx;
+			ALUSrc = 1'bx;
+         end
 	endcase
 endmodule
