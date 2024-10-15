@@ -8,7 +8,7 @@ module Decode (
 		 
 		 output logic RegWriteE,MemWriteE,JumpE,ALUSrcE,
 		 output logic [1:0] BranchE,
-		 output logic [1:0] ResultSrcE ,
+		 output logic ResultSrcE ,
        output logic [2:0] ALUControlE,            //Toma los 3 bits de operación en el opcode
        output logic [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
        //output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
@@ -19,7 +19,7 @@ module Decode (
          
        logic RegWriteD,MemWriteD,JumpD,ALUSrcD;
 		 logic [1:0] BranchD;
-		 logic [1:0] ResultSrcD;
+		 logic ResultSrcD;
        logic [2:0] ALUControlD;                 //Toma los 3 bits de operación en el opcode (intermedio)
 		 logic [1:0] ImmSrcD;                    //Enable de Extend
 		 logic [18:0] RD1D, RD2D, ImmExtD;      //Registros fuentes, inmediato (intermedios)
@@ -27,7 +27,7 @@ module Decode (
 
 		 
 		 //Registro de Decode
-		 reg [88:0] decode_reg;
+		 reg [87:0] decode_reg;
 		 
 		
 		//Se llaman los módulos que componen a Decode
@@ -69,7 +69,7 @@ module Decode (
 		
       always @(posedge clk or negedge reset) begin
         if(reset == 1'b0) begin
-            decode_reg <= 89'h0;
+            decode_reg <= 88'h0;
 
         end
         else begin
@@ -78,14 +78,14 @@ module Decode (
 				decode_reg[2] <= JumpD;
 				decode_reg[4:3] <= BranchD;
             decode_reg[5] <= ALUSrcD;
-            decode_reg[7:6] <= ResultSrcD; 
-            decode_reg[10:8] <= ALUControlD;
-            decode_reg[29:11] <= RD1D; 
-            decode_reg[48:30] <= RD2D; 
-            decode_reg[67:49] <= ImmExtD;
-				decode_reg[82:68] <= PCD;
-				decode_reg[87:83] <= InstrD[9:5]; //RDD
-				decode_reg [88] <= Cant_ByteD;
+            decode_reg[6] <= ResultSrcD; 
+            decode_reg[9:7] <= ALUControlD;
+            decode_reg[28:10] <= RD1D; 
+            decode_reg[47:29] <= RD2D; 
+            decode_reg[66:48] <= ImmExtD;
+				decode_reg[81:67] <= PCD;
+				decode_reg[86:82] <= InstrD[9:5]; //RDD
+				decode_reg [87] <= Cant_ByteD;
 				   
         end
     end
@@ -97,14 +97,14 @@ module Decode (
 	 assign JumpE = decode_reg[2];
 	 assign BranchE = decode_reg[4:3];
     assign ALUSrcE = decode_reg[5];
-    assign ResultSrcE = decode_reg[7:6];
-    assign ALUControlE = decode_reg[10:8];
-	 assign RD1E = decode_reg[29:11];
-    assign RD2E = decode_reg[48:30];
-	 assign ImmExtE = decode_reg[67:49];
-    assign PCE = decode_reg[82:68]; 
-    assign RDE = decode_reg[87:83];
-	 assign Cant_ByteE = decode_reg [88];
+    assign ResultSrcE = decode_reg[6];
+    assign ALUControlE = decode_reg[9:7];
+	 assign RD1E = decode_reg[28:10];
+    assign RD2E = decode_reg[47:29];
+	 assign ImmExtE = decode_reg[66:48];
+    assign PCE = decode_reg[81:67]; 
+    assign RDE = decode_reg[86:82];
+	 assign Cant_ByteE = decode_reg [87];
 
 endmodule 
 

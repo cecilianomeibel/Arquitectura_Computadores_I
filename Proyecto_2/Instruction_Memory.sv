@@ -4,7 +4,7 @@ module Instruction_Memory(
 		 output logic [19:0] rd   //instruccion
 );
 	
-	logic [19:0] ROM [511:0];
+	logic [19:0] ROM [9:0];     //Caben 500 instrucciones aproximadamente
 	
 	initial begin
 		  

@@ -2,7 +2,7 @@ module Execute_tb();
 
        logic clk, reset, RegWriteE,MemWriteE,JumpE,ALUSrcE;
 		 logic [1:0] BranchE;
-	    logic [1:0] ResultSrcE;
+	    logic ResultSrcE;
        logic [2:0] ALUControlE;
        logic [18:0] RD1E, RD2E, ImmExtE;
        logic [14:0] PCE;
@@ -10,8 +10,8 @@ module Execute_tb();
        logic [18:0] ResultW;
 		 logic Cant_ByteE;
        
-		 logic PCSrcE, RegWriteM, MemWriteM;
-       logic [1:0] ResultSrcM;
+		 logic PCSrcM, RegWriteM, MemWriteM;
+       logic ResultSrcM;
        logic [4:0]  RDM;
        logic [18:0] WriteDataM, ALUResultM;
        logic [14:0] PCTargetE;
@@ -35,7 +35,7 @@ module Execute_tb();
 		 .ResultW(ResultW),
 		 .Cant_ByteE(Cant_ByteE),
 		 
-		 .PCSrcE(PCSrcE),
+		 .PCSrcM(PCSrcM),
 		 .RegWriteM(RegWriteM),
 		 .MemWriteM(MemWriteM),
 		 .ResultSrcM(ResultSrcM),

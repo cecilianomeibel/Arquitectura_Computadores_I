@@ -1,7 +1,6 @@
 module Control_Unit (
        input logic [4:0] Opcode,    
-		 output logic RegWrite,
-		 output logic [1:0] ResultSrc,
+		 output logic RegWrite,ResultSrc,
 		 output logic MemWrite,Jump,
 		 output logic [1:0] Branch,
 		 output logic [2:0] ALUControl,
@@ -20,7 +19,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;           //Enable del Extend 00 (no se usa), 01 (exd AR), 10 (ext TD), 11(ext CF)
 			ALUControl = 3'b000;     //Indicar cual operación en la ALU
-			ResultSrc = 2'b00;      //mux_3_1 si es 00 de ALU, 01 de Memoria
+			ResultSrc = 1'b0;      //mux_3_1 si es 00 de ALU, 01 de Memoria
 			MemWrite = 1'b0;       //Enable de escritura en Memoria
 			Jump = 1'b0;          //Jump
 			Branch = 2'b00;       //Branch
@@ -34,7 +33,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b01;
 			ALUControl = 3'b000;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -48,7 +47,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b001;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -62,7 +61,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b010;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -76,7 +75,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b011;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -90,7 +89,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b100;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -104,7 +103,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b01;
 			ALUControl = 3'b101;
-			ResultSrc = 2'b00;	
+			ResultSrc = 1'b0; 	
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -118,7 +117,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;   //SUM
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0; 
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -133,7 +132,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;    //SUM
-			ResultSrc = 2'b00;     //00 de ALU
+			ResultSrc = 1'b0;      //00 de ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -147,7 +146,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b10;          //ext 10 de TD
 			ALUControl = 3'b000;    //SUM
-			ResultSrc = 2'b00;     //00 de ALU
+			ResultSrc = 1'b0;      //00 de ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -161,7 +160,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;   //SUM
-			ResultSrc = 2'b00;    //00 ALU
+			ResultSrc = 1'b0;     //00 ALU
 			MemWrite = 1'b1;     
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -175,7 +174,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;  //SUM
-			ResultSrc = 2'b00;   //00 ALU
+			ResultSrc = 1'b0;    //00 ALU
 			MemWrite = 1'b1;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -189,7 +188,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;   //SUM
-			ResultSrc = 2'b01;    //01 memoria
+			ResultSrc = 1'b1;    //1 memoria
 			MemWrite = 1'b0;     //no escribe en memoria
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -203,7 +202,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b000;    //SUM
-			ResultSrc = 2'b01;     //01 memoria
+			ResultSrc = 1'b1;     //1 memoria
 			MemWrite = 1'b0;      //no escribe en memoria
 			Jump = 1'b0; 
 			Branch = 2'b00;
@@ -218,7 +217,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b11;        //11 ext de CF
 			ALUControl = 3'b000;  //En realidad no es suma
-			ResultSrc = 2'b00;   //00 de ALU 
+			ResultSrc = 1'b0;   //00 de ALU 
 			MemWrite = 1'b0;
 			Jump = 1'b1;        //salto 
 			Branch = 2'b00;
@@ -232,7 +231,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b00;
 			ALUControl = 3'b001;   //RES
-			ResultSrc = 2'b00;    // Con ALU
+			ResultSrc = 1'b0;    // Con ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b00;
@@ -246,7 +245,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b11;       //11 ext de CF
 			ALUControl = 3'b000;
-			ResultSrc = 2'b00;    //ALU
+			ResultSrc = 1'b0;    //ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b01;
@@ -260,7 +259,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b11;        //11 ext de CF
 			ALUControl = 3'b000;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b10;
@@ -274,7 +273,7 @@ module Control_Unit (
 			begin
 			ImmSrc = 2'b11;       //11 ext de CF
 			ALUControl = 3'b000;
-			ResultSrc = 2'b00;
+			ResultSrc = 1'b0;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
 			Branch = 2'b11;
@@ -287,7 +286,7 @@ module Control_Unit (
 			begin  // Opcode not implemented
          ImmSrc = 2'bxx;      
 			ALUControl = 3'bxxx;
-			ResultSrc = 2'bxx;
+			ResultSrc = 1'bx;
 			MemWrite = 1'bx;
 			Jump = 1'bx;
 			Branch = 1'b1;

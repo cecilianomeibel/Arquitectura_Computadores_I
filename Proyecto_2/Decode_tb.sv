@@ -8,7 +8,7 @@ module Decode_tb ();
 		 
 		 logic RegWriteE,MemWriteE,JumpE,ALUSrcE;
 		 logic [1:0] BranchE;
-		 logic [1:0] ResultSrcE;
+		 logic ResultSrcE;
        logic [2:0] ALUControlE;            //Toma los 3 bits de operación en el opcode
        logic [18:0] RD1E, RD2E,ImmExtE;   //Registros fuentes, inmediato
        //output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
