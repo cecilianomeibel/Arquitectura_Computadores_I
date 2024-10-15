@@ -9,14 +9,14 @@ module Fetch_tb();
 	 
 	 //Se instancia el módulo
 	 
-	 Fetch fetch(
-	    .clk(clk),
-		 .reset(reset),
-		 .PCSrcE(PCSrcE),
-		 .PCTargetE(PCTargetE),
-		 .InstrD(InstrD),
-		 .PCD(PCD)
-	 );
+	Fetch fetch(
+		.clk(clk),
+		.reset(reset),
+		.PCSrcE(PCSrcE),
+		.PCTargetE(PCTargetE),
+		.InstrD(InstrD),
+		.PCD(PCD)
+	);
 	 
 	 
 	 initial begin
