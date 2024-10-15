@@ -2,13 +2,15 @@ module Control_Unit (
        input logic [4:0] Opcode,    
 		 output logic RegWrite,
 		 output logic [1:0] ResultSrc,
-		 output logic MemWrite,Jump,Branch,
+		 output logic MemWrite,Jump,
+		 output logic [1:0] Branch,
 		 output logic [2:0] ALUControl,
 		 output logic ALUSrc,
-		 output logic [1:0] ImmSrc
+		 output logic [1:0] ImmSrc,
+		 output logic Cant_Byte
 );
 
-	always @*
+	always @(*) begin
 	case(Opcode)
 	
 	  //Aritméticas categoría 00
@@ -21,9 +23,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;      //mux_3_1 si es 00 de ALU, 01 de Memoria
 			MemWrite = 1'b0;       //Enable de escritura en Memoria
 			Jump = 1'b0;          //Jump
-			Branch = 1'b0;       //Branch
+			Branch = 2'b00;       //Branch
 			RegWrite = 1'b1;    //WriteBack
 			ALUSrc = 1'b0;     //mux_2_1 si es 0 operación con 2 registros , si es 1 operación con 1 registro y un inmediato
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//SUMI
@@ -34,9 +37,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 	   //RES
@@ -47,9 +51,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//MULT
@@ -60,9 +65,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//DIV
@@ -73,9 +79,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//MOD 
@@ -86,9 +93,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//CLI
@@ -99,9 +107,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;	
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//SUAVE 
@@ -112,9 +121,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//Transferencia de Datos, categoría 01
@@ -126,9 +136,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;     //00 de ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
 			ALUSrc = 1'b0;      //2 registros
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//TRFI (li)
@@ -139,9 +150,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;     //00 de ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b1;
-			ALUSrc = 1'b1;     //registro+inmediato
+			ALUSrc = 1'b1;      //registro+inmediato
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//ALM (store)
@@ -152,9 +164,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;    //00 ALU
 			MemWrite = 1'b1;     
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b0;     //no writeback
 			ALUSrc = 1'b0;       //2 registros 
+			Cant_Byte = 1'b1;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//ALMB (store)
@@ -165,9 +178,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;   //00 ALU
 			MemWrite = 1'b1;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b0;      //no writeback
 			ALUSrc = 1'b0;       //2 registros 
+			Cant_Byte = 1'b0;   // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end 
 			
 		//LR (load)
@@ -178,9 +192,10 @@ module Control_Unit (
 			ResultSrc = 2'b01;    //01 memoria
 			MemWrite = 1'b0;     //no escribe en memoria
 			Jump = 1'b0;
-			Branch = 1'b0;
-			RegWrite = 1'b1;   //writeback
-			ALUSrc = 1'b0;    //2 registros
+			Branch = 2'b00;
+			RegWrite = 1'b1;     //writeback
+			ALUSrc = 1'b0;      //2 registros
+			Cant_Byte = 1'b1;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//LRB (load)
@@ -191,9 +206,10 @@ module Control_Unit (
 			ResultSrc = 2'b01;     //01 memoria
 			MemWrite = 1'b0;      //no escribe en memoria
 			Jump = 1'b0; 
-			Branch = 1'b0;
-			RegWrite = 1'b1;    //writeback
+			Branch = 2'b00;
+			RegWrite = 1'b1;     //writeback
 			ALUSrc = 1'b0;      //2 registros
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//Control de Flujo, categoría 10	
@@ -205,9 +221,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;   //00 de ALU 
 			MemWrite = 1'b0;
 			Jump = 1'b1;        //salto 
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b0;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//CMB
@@ -218,9 +235,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;    // Con ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b0;
+			Branch = 2'b00;
 			RegWrite = 1'b0;
 			ALUSrc = 1'b0;      //Con 2 registros
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//SMAE
@@ -231,9 +249,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;    //ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b1;
+			Branch = 2'b01;
 			RegWrite = 1'b0;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//SMEE
@@ -244,9 +263,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b1;
+			Branch = 2'b10;
 			RegWrite = 1'b0;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 		//SPE
@@ -257,9 +277,10 @@ module Control_Unit (
 			ResultSrc = 2'b00;
 			MemWrite = 1'b0;
 			Jump = 1'b0;
-			Branch = 1'b1;
+			Branch = 2'b11;
 			RegWrite = 1'b0;
 			ALUSrc = 1'b1;
+			Cant_Byte = 1'b0;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
 			end
 			
 	 default: 
@@ -272,6 +293,8 @@ module Control_Unit (
 			Branch = 1'b1;
 			RegWrite = 1'bx;
 			ALUSrc = 1'bx;
+			Cant_Byte = 1'bx;  // con 0 toma 1 byte, con 1 toma 2 bytes en memoria 
          end
 	endcase
+  end
 endmodule

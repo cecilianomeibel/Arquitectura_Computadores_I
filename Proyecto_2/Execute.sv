@@ -1,34 +1,37 @@
 module Execute(
 
-    input logic clk, reset, RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
+    input logic clk, reset, RegWriteE,MemWriteE,JumpE,ALUSrcE,
+	 input logic [1:0] BranchE,
 	 input logic [1:0] ResultSrcE,
     input logic [2:0] ALUControlE,
     input logic [18:0] RD1E, RD2E, ImmExtE,
     input logic [14:0] PCE,
 	 input logic [4:0] RDE,
     input logic [18:0] ResultW,
+	 input logic Cant_ByteE,
+	 
     //input logic [1:0] ForwardA_E, ForwardB_E,  (Hazard)
-
     output logic PCSrcE, RegWriteM, MemWriteM, 
 	 output logic [1:0] ResultSrcM,
     output logic [4:0]  RDM, 
     output logic [18:0] WriteDataM, ALUResultM,
-    output logic [14:0] PCTargetE
+    output logic [14:0] PCTargetE,
+	 output logic Cant_ByteM
 );
 
 
     //Valores intermedios
 	 
-    logic [18:0] SrcA, SrcB_intermedio, SrcB; 
+    logic [18:0]  SrcB;   //SrcA, //SrcB_intermedio,
     logic [18:0] ResultE;
     logic ZeroE, OverFlowE,NegativeE;
+    logic [2:0] ALUFlags;
 
 	 
 	 //Registro de Execute
-	  reg [46:0] execute_reg;
-		 
-		 
-    
+	  reg [47:0] execute_reg;
+	 
+	 
 	//Se instancian los módulos que componen a execute
 	 
 	
@@ -55,7 +58,7 @@ module Execute(
 	 //Mux para ALU
 	
     Mux_2_1 alu_mux (
-            .a(SrcB_intermedio),
+            .a(RD2E),
             .b(ImmExtE),
             .s(ALUSrcE),
             .c(SrcB)
@@ -63,28 +66,36 @@ module Execute(
 
  
     ALU alu (
-            .A(SrcA),
+            .A(RD1E),
             .B(SrcB),
             .Result(ResultE),
             .ALUControl(ALUControlE),
-            .OverFlow(OverFlowE),
-            .Zero(ZeroE),
-            .Negative(NegativeE)
+            .ALUFlags(ALUFlags)
             );
 
     
     Adder branch_adder (
             .a(PCE),
-            .b(ImmExtE),
+            .b(ImmExtE[14:0]),
             .c(PCTargetE)
             );
 
+				
+		always @(posedge clk) begin
+		    if (BranchE == 2'b00)begin
+			     ZeroE <= ALUFlags[2];
+	           OverFlowE <= ALUFlags[1];
+	           NegativeE <= ALUFlags[0]; 
+      		
+			 end
+		end
+				
 				
     // Logica de registros de execute
 	 
     always @(posedge clk or negedge reset) begin
         if(reset == 1'b0) begin
-		     execute_reg <= 47'h0;
+		     execute_reg <= 48'h0;
 		 
 		  end
 		  else begin
@@ -93,20 +104,28 @@ module Execute(
             execute_reg [1] <= MemWriteE; 
             execute_reg [3:2] <= ResultSrcE;
             execute_reg [8:4] <= RDE; 
-            execute_reg [27:9] <= SrcB_intermedio; 
+            execute_reg [27:9] <= RD2E; 
             execute_reg [46:28] <= ResultE;
+				execute_reg [47] <= Cant_ByteE;
         end
     end
 
 	 
     // Asignación de puertos de salida 
-
-    assign PCSrcE = (ZeroE & BranchE)||JumpE;    //AND Gate
+	               
     assign RegWriteM = execute_reg [0];
     assign MemWriteM = execute_reg [1];
     assign ResultSrcM = execute_reg [3:2];
     assign RDM = execute_reg [8:4];
     assign WriteDataM = execute_reg [27:9];  
     assign ALUResultM = execute_reg [46:28];
-
+	 assign Cant_ByteM = execute_reg [47];
+    	 
+	 //Condiciones de Salto 
+    assign PCSrcE = (ZeroE && BranchE[0] && BranchE[1])? 1'b1:   //SPE
+	                 (~(NegativeE ^ OverFlowE) && ~(BranchE[1]) && BranchE[0])? 1'b1:  //SMAE
+	                 ((NegativeE ^ OverFlowE) && BranchE[1] && ~(BranchE[0]))? 1'b1:   //SMEE
+	                 (JumpE)? 1'b1: 1'b0;    //SAP
+	  
+    
 endmodule

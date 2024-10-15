@@ -2,10 +2,9 @@ module ALU(
      input logic [18:0] A,B,
 	  input logic [2:0] ALUControl, 
 	  output logic [18:0] Result,
-	  output logic Zero,OverFlow,Negative
+	  output logic [2:0] ALUFlags
 );
     
-    logic [2:0] ALUFlags;
 	 parameter N=19;
     logic [18:0] Result1,Residuo;
 	 
@@ -50,9 +49,5 @@ module ALU(
             end
         endcase
     end
-	 
-	 assign Zero = ALUFlags[0];
-	 assign OverFlow = ALUFlags[1];
-	 assign Negative = ALUFlags[2];
 
 endmodule 

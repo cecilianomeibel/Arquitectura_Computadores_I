@@ -6,13 +6,15 @@ module Decode_tb ();
 		 logic [14:0] PCD;
 		 logic [4:0] RdW;            //Son 19 registros, 19 bits es 2^5
 		 
-		 logic RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE;
+		 logic RegWriteE,MemWriteE,JumpE,ALUSrcE;
+		 logic [1:0] BranchE;
 		 logic [1:0] ResultSrcE;
        logic [2:0] ALUControlE;            //Toma los 3 bits de operación en el opcode
        logic [18:0] RD1E, RD2E,ImmExtE;   //Registros fuentes, inmediato
        //output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
        logic [14:0] PCE;
 		 logic [4:0] RDE;   //Destino
+		 logic Cant_ByteE;
 		 
 		 
 		 Decode decode(
@@ -34,7 +36,8 @@ module Decode_tb ();
 		 .RD2E(RD2E),
 		 .ImmExtE(ImmExtE),
 		 .PCE(PCE),
-		 .RDE(RDE)
+		 .RDE(RDE),
+		 .Cant_ByteE(Cant_ByteE)
 		 );
 		 
 		 initial begin
@@ -45,11 +48,13 @@ module Decode_tb ();
 	 
 	    reset = 1'b1;
 		 
+		 //Instrucción TRF
 		 RegWriteW = 1'h0;
 		 InstrD = 20'h00429;       //Tamaño de instrucción
 		 ResultW = 19'h5 ;         //Tamaño de registro
 		 PCD = 15'h5;
 		 RdW = 5'h5;
+		 Cant_ByteE = 1'b0;
 	 
 	    #40;
 	    $finish;
