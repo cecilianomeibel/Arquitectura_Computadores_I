@@ -1,10 +1,10 @@
 module Instruction_Memory(
-       input logic reset,
-		 input logic [14:0] a,     //PCF
-		 output logic [19:0] rd   //instruccion
+	input logic reset,
+	input logic [14:0] a,     //PCF
+	output logic [19:0] rd   //instruccion
 );
 	
-	logic [19:0] ROM [9:0];     //Caben 500 instrucciones aproximadamente
+	logic [19:0] ROM [511:0];     //Caben 500 instrucciones aproximadamente
 	
 	initial begin
 		  

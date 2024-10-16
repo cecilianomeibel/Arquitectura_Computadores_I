@@ -4,7 +4,7 @@ module Pipeline_tb();
 	logic [3:0] cuadrante;
 	logic [7:0] pixel;
 
-	Pipeline(
+	Pipeline pipeline(
 		.clk(clk), 
 		.reset(reset),
 		.cuadrante(cuadrante),
@@ -25,7 +25,7 @@ module Pipeline_tb();
 	 reset = 1'b1;
 	 cuadrante = 4'd10;
 	 
-	 #40;
+	 #100;
 	 $finish;
 	 
 	 end

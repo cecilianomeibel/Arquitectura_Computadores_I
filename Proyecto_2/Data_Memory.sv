@@ -6,8 +6,10 @@ module Data_Memory(
 	input logic Cant_Byte,
 	output logic [18:0] RD
 ); 
-	reg [15:0] mem [18:0];   //389 mil aproximadamente, por eso el 2^19
-
+	reg [63:0] mem [500:0];   //389 mil aproximadamente, por eso el 2^19
+		
+	
+	
 	always @ (posedge clk) begin
 	
 		if(WE && Cant_Byte == 1'b0 && ~A[0]) begin          //Tomar 1 byte
@@ -24,11 +26,11 @@ module Data_Memory(
 		
 		end
 		
-		mem[19'h4] <= cuadrante;
+		mem[19'h0] <= {15'h0,cuadrante};
 		
     end
 
-	assign RD = (~reset) ? 19'd0 : (Cant_Byte)? {4'h0,mem[A[18:1]]}: 
+	assign RD = (~reset) ? 19'd0 : (Cant_Byte)? {3'h0,mem[A[18:1]]}: 
 				(~A[0])? {12'h0,mem[A[18:1]][7:0]}: {12'h0,mem[A[18:1]][15:8]};
 
 	initial begin
