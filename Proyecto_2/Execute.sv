@@ -9,6 +9,7 @@ module Execute(
 	input logic [4:0] RDE,
 	input logic Cant_ByteE,
 	input logic [1:0] ForwardA_E, ForwardB_E,  //(Hazard)
+	input logic [18:0] ResultW,
 	
 	output logic PCSrcE, RegWriteM, MemWriteM, 
 	output logic ResultSrcM,
@@ -21,7 +22,7 @@ module Execute(
 
 	//Valores intermedios
 
-	logic [18:0]  SrcB, SrcA, SrcB_intermedio,
+	logic [18:0]  SrcB, SrcA, SrcB_intermedio;
 	logic [18:0] ResultE;
 	logic ZeroE, OverFlowE,NegativeE;
 	logic [2:0] ALUFlags;

@@ -38,7 +38,7 @@ module Decode_tb ();
 		 .ImmExtE(ImmExtE),
 		 .PCE(PCE),
 		 .RDE(RDE),
-		 .Cant_ByteE(Cant_ByteE)
+		 .Cant_ByteE(Cant_ByteE),
 		 .RS1E(RS1E),
 		 .RS2E(RS2E)
 		 );

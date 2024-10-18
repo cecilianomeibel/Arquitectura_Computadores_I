@@ -1,70 +1,90 @@
+`timescale 1 ps / 1 ps
 module Memory_tb();
-       logic clk,reset;
-	    logic RegWriteM,MemWriteM,ResultSrcM;
-	    logic [4:0]  RDM; 
-	    logic [18:0] WriteDataM, ALUResultM;
-	    logic Cant_ByteM;
-	 
-	    logic RegWriteW,ResultSrcW;
-	    logic [4:0]  RDW; 
-	    logic [18:0] ReadDataW;
-	    logic [18:0] ResultW;
+
+	logic clk,reset;
+	logic [3:0] cuadrante;
+	logic RegWriteM,MemWriteM,ResultSrcM;
+	logic [4:0]  RDM; 
+	logic [18:0] WriteDataM, ALUResultM;
+	logic Cant_ByteM;
+
+	logic RegWriteW,ResultSrcW;
+	logic [4:0]  RdW; 
+	logic [18:0] ReadDataW;
+	logic [18:0] ALUResultW;
+	logic [7:0] pixel;
+
 		 
-		 
-		 Memory memory(
-		 .clk(clk),
-		 .reset(reset),
-		 .RegWriteM(RegWriteM),
-		 .MemWriteM(MemWriteM),
-		 .ResultSrcM(ResultSrcM),
-		 .RDM(RDM),
-		 .WriteDataM(WriteDataM),
-		 .ALUResultM(ALUResultM),
-		 .Cant_ByteM(Cant_ByteM),
-		 
-		 .RegWriteW(RegWriteW),
-		 .ResultSrcW(ResultSrcW),
-		 .RDW(RDW),
-		 .ReadDataW(ReadDataW),
-		 .ResultW(ResultW));
-		 
-		 
-		 initial begin
-	    reset = 1'b0;
+	Memory memory(
+		.clk(clk),
+		.reset(reset),
+		.cuadrante(cuadrante),
+		.RegWriteM(RegWriteM),
+		.MemWriteM(MemWriteM),
+		.ResultSrcM(ResultSrcM),
+		.RDM(RDM),
+		.WriteDataM(WriteDataM),
+		.ALUResultM(ALUResultM),
+		.Cant_ByteM(Cant_ByteM),
+
+		.RegWriteW(RegWriteW),
+		.ResultSrcW(ResultSrcW),
+		.RdW(RdW),
+		.ReadDataW(ReadDataW),
+		.ALUResultW(ALUResultW),
+		.pixel(pixel)
+	);
+
 	
-	    clk = 0;
-	    #5;
-	 
-	    reset = 1'b1;
-		 
-		 //Prueba1
+	always begin
+	
+		clk = ~clk; #10;
+
+	end
+	
+	initial begin
+		reset = 1'b0;
+		clk = 0;
+
+		#10;
+
+		reset = 1'b1;
+
+		//Prueba1
+
+		MemWriteM = 1'b1;    //escribir en memoria
+		WriteDataM = 19'heeff;  // lo que se va a guardar
+		ALUResultM = 19'h2;  // dirección
+		Cant_ByteM = 1'b1;   // 2 byte
+		cuadrante = 4'h2;
+
+		#20;
 		
-		 MemWriteM = 1'b1;    //escribir en memoria
-		 WriteDataM = 19'h3;  // lo que se va a guardar
-		 ALUResultM = 19'h5;  // dirección
-		 Cant_ByteM = 1'b0;   // 1 byte
-   	 
-	    #40;
-		 
-		 //Prueba2
+		//Prueba2
+
+		MemWriteM = 1'b1;    //escribir en memoria
+		WriteDataM = 19'hccaa;  // lo que se va a guardar
+		ALUResultM = 19'h4;  // dirección
+		Cant_ByteM = 1'b1;   // 2 byte
+		cuadrante = 4'h2;
+
+		#20;
 		
-		 MemWriteM = 1'b0;      //no va a escribir
-		 WriteDataM = 19'b0;   // no se va a guardar nada
-		 ALUResultM = 19'h5;  //dirección 
-		 Cant_ByteM = 1'b0;  // 1 byte
-   	 
-	    #40;
-		 
-		 
-		 $finish;
-	 
-	    end
-	 
-	 
-	    always begin
-		 
-		  clk = ~clk; #5;
-	    
-		 end
+
+		//Prueba3
+
+		MemWriteM = 1'b0;      //se lee
+		WriteDataM = 19'b0;   // no se va a guardar nada
+		ALUResultM = 19'h4;  //dirección 
+		Cant_ByteM = 1'b1;  // 1 byte
+		cuadrante = 4'h2;
+
+		#40;
+
+
+		$finish;
+
+	end
+
 		 
 endmodule

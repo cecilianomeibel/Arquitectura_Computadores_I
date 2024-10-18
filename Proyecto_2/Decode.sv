@@ -13,7 +13,7 @@ module Decode (
 	output logic [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
 	output logic [14:0] PCE,
 	output logic [4:0] RDE,   //Destino
-	output logic Cant_ByteE
+	output logic Cant_ByteE,
 	output logic [4:0] RS1E, RS2E           //RS1E Y RS2E PARA EL HAZARD 
 );     
          
@@ -108,8 +108,8 @@ module Decode (
 	assign PCE = decode_reg[81:67]; 
 	assign RDE = decode_reg[86:82];
 	assign Cant_ByteE = decode_reg [87];
-	assign RS1E = decode_reg [92:88]
-	assign RS2E = decode_reg [97:93]
+	assign RS1E = decode_reg [92:88];
+	assign RS2E = decode_reg [97:93];
 
 endmodule 
 

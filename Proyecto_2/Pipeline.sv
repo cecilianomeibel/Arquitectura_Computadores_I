@@ -25,7 +25,6 @@ module Pipeline(
 	logic [14:0] PCE;
 	logic [4:0] RDE;   //Destino
 	logic Cant_ByteE;
-	logic [4:0] RS1E, RS2E;
 	
 	// Etapa Execute
 	logic PCSrcM, RegWriteM, MemWriteM; 
@@ -41,7 +40,6 @@ module Pipeline(
 	logic [4:0]  RDW;
 	logic [18:0] ReadDataW;
 	logic [18:0] ALUResultW;
-	
 	
 	
 	//Fetch
@@ -78,7 +76,7 @@ module Pipeline(
 		.ImmExtE(ImmExtE),   			//Registros fuentes, inmediato
 		.PCE(PCE),
 		.RDE(RDE),   				//Destino
-		.Cant_ByteE(Cant_ByteE)
+		.Cant_ByteE(Cant_ByteE),
 		.RS1E(RS1E), 
 		.RS2E(RS2E)
 	);     
@@ -102,6 +100,7 @@ module Pipeline(
 		.Cant_ByteE(Cant_ByteE),
 		.ForwardA_E(ForwardA_E), 
 		.ForwardB_E(ForwardB_E),
+		.ResultW(ResultW),
 		
 		.PCSrcE(PCSrcE), 
 		.RegWriteM(RegWriteM), 
@@ -132,9 +131,9 @@ module Pipeline(
 		.ResultSrcW(ResultSrcW),
 		.RdW(RdW), 
 		.ReadDataW(ReadDataW),
-		.ALUResultW(ALUResultW)
+		.ALUResultW(ALUResultW),
+		.pixel(pixel)
 	);
-	
 	
 	//WriteBack
 	Mux_2_1 pc_mux(
@@ -147,10 +146,10 @@ module Pipeline(
 	
 	//Hazard
 	Hazard hazard(
-	   .reset(reset), 
+		.reset(reset), 
 		.RegWriteM(RegWriteM), 
 		.RegWriteW(RegWriteW),
-      .RDM(RDM), 
+		.RDM(RDM), 
 		.RDW(RDW), 
 		.RS1E(RS1E), 
 		.RS2E(RS2E),    

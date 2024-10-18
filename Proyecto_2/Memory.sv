@@ -9,7 +9,8 @@ module Memory(
 	output logic RegWriteW,ResultSrcW,
 	output logic [4:0]  RdW, 
 	output logic [18:0] ReadDataW,
-	output logic [18:0] ALUResultW
+	output logic [18:0] ALUResultW,
+	output logic [7:0] pixel
 );
 
 
@@ -31,7 +32,8 @@ module Memory(
 		.WD(WriteDataM),
 		.WE(MemWriteM),
 		.Cant_Byte(Cant_ByteM),
-		.RD(ReadDataM)
+		.RD(ReadDataM),
+		.pixel(pixel)
 	);
 		 
 		 
