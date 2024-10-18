@@ -11,10 +11,10 @@ module Decode (
 	output logic ResultSrcE ,
 	output logic [2:0] ALUControlE,            //Toma los 3 bits de operación en el opcode
 	output logic [18:0] RD1E, RD2E,ImmExtE,   //Registros fuentes, inmediato
-	//output [4:0] RS1E, RS2E,         //RS1E Y RS2E PARA EL HAZARD *****
 	output logic [14:0] PCE,
 	output logic [4:0] RDE,   //Destino
 	output logic Cant_ByteE
+	output logic [4:0] RS1E, RS2E           //RS1E Y RS2E PARA EL HAZARD 
 );     
          
 	logic RegWriteD,MemWriteD,JumpD,ALUSrcD;
@@ -27,7 +27,7 @@ module Decode (
 
 	 
 	//Registro de Decode
-	reg [87:0] decode_reg;
+	reg [97:0] decode_reg;
 		 
 		
 	//Se llaman los módulos que componen a Decode
@@ -70,7 +70,7 @@ module Decode (
 
 	always @(posedge clk or negedge reset) begin
 		if(reset == 1'b0) begin
-			decode_reg <= 88'h0;
+			decode_reg <= 98'h0;
 
 			end
 		else begin
@@ -87,6 +87,8 @@ module Decode (
 			decode_reg[81:67] <= PCD;
 			decode_reg[86:82] <= InstrD[9:5]; //RDD
 			decode_reg [87] <= Cant_ByteD;
+			decode_reg [92:88] <= InstrD[14:10]; //RS1D (Rf1)
+			decode_reg [97:93] <= InstrD[19:15]; //RS2D (Rf2)
 
 		end
 	end
@@ -106,6 +108,8 @@ module Decode (
 	assign PCE = decode_reg[81:67]; 
 	assign RDE = decode_reg[86:82];
 	assign Cant_ByteE = decode_reg [87];
+	assign RS1E = decode_reg [92:88]
+	assign RS2E = decode_reg [97:93]
 
 endmodule 
 

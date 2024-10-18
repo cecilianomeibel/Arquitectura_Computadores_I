@@ -15,6 +15,7 @@ module Decode_tb ();
        logic [14:0] PCE;
 		 logic [4:0] RDE;   //Destino
 		 logic Cant_ByteE;
+		 logic [4:0] RS1E, RS2E;           //RS1E Y RS2E PARA EL HAZARD 
 		 
 		 
 		 Decode decode(
@@ -38,6 +39,8 @@ module Decode_tb ();
 		 .PCE(PCE),
 		 .RDE(RDE),
 		 .Cant_ByteE(Cant_ByteE)
+		 .RS1E(RS1E),
+		 .RS2E(RS2E)
 		 );
 		 
 		 initial begin

@@ -4,13 +4,16 @@ module Pipeline(
 	output logic [7:0] pixel
 
 );
+
+   //Definición de señales 
+	
 	// Etapa Fetch
 	logic PCSrcE;
 	logic [19:0] InstrD;
 	logic [14:0] PCD;
 	
 	// Etapa Decode
-	logic [4:0] RdW;           //Son 19 registros, 19 bits es 2^5
+	logic [4:0] RdW;              //Son 19 registros, 19 bits es 2^5
 	logic [18:0] ResultW;        //Tamaño de registro
 
 	logic RegWriteE, MemWriteE, JumpE, ALUSrcE;
@@ -18,10 +21,11 @@ module Pipeline(
 	logic ResultSrcE;
 	logic [2:0] ALUControlE;            //Toma los 3 bits de operación en el opcode
 	logic [18:0] RD1E, RD2E,ImmExtE;   //Registros fuentes, inmediato
-	logic [4:0] RS1E, RS2E;         //RS1E Y RS2E PARA EL HAZARD *****
+	logic [4:0] RS1E, RS2E;           //RS1E Y RS2E PARA EL HAZARD *****
 	logic [14:0] PCE;
 	logic [4:0] RDE;   //Destino
 	logic Cant_ByteE;
+	logic [4:0] RS1E, RS2E;
 	
 	// Etapa Execute
 	logic PCSrcM, RegWriteM, MemWriteM; 
@@ -30,6 +34,7 @@ module Pipeline(
 	logic [18:0] WriteDataM, ALUResultM;
 	logic [14:0] PCTargetE;
 	logic Cant_ByteM;
+	logic [1:0] ForwardA_E, ForwardB_E;
 
 	// Etapa Memory
 	logic RegWriteW,ResultSrcW;
@@ -39,7 +44,7 @@ module Pipeline(
 	
 	
 	
-	
+	//Fetch
 	Fetch fetch_etapa(  
 		.clk(clk),
 		.reset(reset),
@@ -50,14 +55,16 @@ module Pipeline(
 		.PCD(PCD)
 	);
 
+	
+	//Decode 
 	Decode decode_etapa(
 		.clk(clk), 
 		.reset(reset), 
 		.RegWriteW(RegWriteW),
-		.InstrD(InstrD),          //Tamaño de instrucción
+		.InstrD(InstrD),           //Tamaño de instrucción
 		.ResultW(ResultW),        //Tamaño de registro
 		.PCD(PCD),
-		.RdW(RdW),            //Son 19 registros, 19 bits es 2^5
+		.RdW(RdW),              //Son 19 registros, 19 bits es 2^5
 
 		.RegWriteE(RegWriteE),
 		.MemWriteE(MemWriteE),
@@ -72,8 +79,11 @@ module Pipeline(
 		.PCE(PCE),
 		.RDE(RDE),   				//Destino
 		.Cant_ByteE(Cant_ByteE)
+		.RS1E(RS1E), 
+		.RS2E(RS2E)
 	);     
 	
+	//Execute
 	Execute execute_etapa(
 		.clk(clk), 
 		.reset(reset), 
@@ -90,6 +100,8 @@ module Pipeline(
 		.PCE(PCE),
 		.RDE(RDE),
 		.Cant_ByteE(Cant_ByteE),
+		.ForwardA_E(ForwardA_E), 
+		.ForwardB_E(ForwardB_E),
 		
 		.PCSrcE(PCSrcE), 
 		.RegWriteM(RegWriteM), 
@@ -102,6 +114,8 @@ module Pipeline(
 		.Cant_ByteM(Cant_ByteM)
 	);
 	
+	
+	//Memory
 	Memory memory(
 		.clk(clk),
 		.reset(reset),
@@ -121,11 +135,27 @@ module Pipeline(
 		.ALUResultW(ALUResultW)
 	);
 	
+	
+	//WriteBack
 	Mux_2_1 pc_mux(
 		.a(ALUResultW),
 		.b(ReadDataW),
 		.s(ResultSrcW),
 		.c(ResultW)
 	);
-
+	
+	
+	//Hazard
+	Hazard hazard(
+	   .reset(reset), 
+		.RegWriteM(RegWriteM), 
+		.RegWriteW(RegWriteW),
+      .RDM(RDM), 
+		.RDW(RDW), 
+		.RS1E(RS1E), 
+		.RS2E(RS2E),    
+		.ForwardA_E(ForwardA_E), 
+		.ForwardB_E(ForwardB_E)
+	);
+	
 endmodule

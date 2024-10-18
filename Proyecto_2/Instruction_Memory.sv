@@ -13,5 +13,5 @@ module Instruction_Memory(
 	end
 	
 	assign rd = (reset == 1'b0) ? {20{1'b0}} : ROM[a];   // Lee el dato en la direccion alineada "A"
-														 // Se hace PC+1, porque las instrucciones son de 17 bits y es un número primo, no es divisible en bytes
+													             	 // Se hace PC+1, porque las instrucciones son de 17 bits y es un número primo, no es divisible en bytes
 endmodule

@@ -1,7 +1,7 @@
 module Mux_2_1(
 
 	input logic [18:0] a,b,
-	input logic s,             //selector
+	input logic s,                   //selector
 	output logic [18:0] c
 );
     

@@ -8,8 +8,8 @@ module Execute(
 	input logic [14:0] PCE,
 	input logic [4:0] RDE,
 	input logic Cant_ByteE,
-
-	//input logic [1:0] ForwardA_E, ForwardB_E,  (Hazard)
+	input logic [1:0] ForwardA_E, ForwardB_E,  //(Hazard)
+	
 	output logic PCSrcE, RegWriteM, MemWriteM, 
 	output logic ResultSrcM,
 	output logic [4:0]  RDM, 
@@ -21,7 +21,7 @@ module Execute(
 
 	//Valores intermedios
 
-	logic [18:0]  SrcB;   //SrcA, //SrcB_intermedio,
+	logic [18:0]  SrcB, SrcA, SrcB_intermedio,
 	logic [18:0] ResultE;
 	logic ZeroE, OverFlowE,NegativeE;
 	logic [2:0] ALUFlags;
@@ -34,50 +34,45 @@ module Execute(
 	//Se instancian los módulos que componen a execute
 	 
 	
-	//Mux para Hazard
+	//Mux's para Hazard
     
-	/* Mux_3_1 srca_mux (
-                        .a(RD1E),
-                        .b(ResultW),
-                        .c(ALUResultM),
-                        .s(ForwardA_E),
-                        .d(Src_A)
-                        );
+	Mux_3_1 srca (
+       .a(RD1E),
+       .b(ResultW),
+       .c(ALUResultM),
+       .s(ForwardA_E),
+       .d(SrcA));
 
     
-    Mux_3_1 srcb_mux (
-                        .a(RD2E),
-                        .b(ResultW),
-                        .c(ALUResultM),
-                        .s(ForwardB_E),
-                        .d(Src_B_interim)
-                       );*/ 
+   Mux_3_1 srcb(
+       .a(RD2E),
+       .b(ResultW),
+       .c(ALUResultM),
+       .s(ForwardB_E),
+       .d(SrcB_intermedio));
     
 	 
 	//Mux para ALU
 
-	Mux_2_1 alu_mux (
-		.a(RD2E),
+	Mux_2_1 alu_mux(
+		.a(SrcB_intermedio),   //	Estaba RD2E
 		.b(ImmExtE),
 		.s(ALUSrcE),
-		.c(SrcB)
-	);
+		.c(SrcB));
 
 
 	ALU alu (
-		.A(RD1E),
+		.A(SrcA),   //Estaba RD1E
 		.B(SrcB),
 		.Result(ResultE),
 		.ALUControl(ALUControlE),
-		.ALUFlags(ALUFlags)
-	);
+		.ALUFlags(ALUFlags));
 
 
 	Adder branch_adder (
 		.a(PCE),
 		.b(ImmExtE[14:0]),
-		.c(PCTargetE)
-	);
+		.c(PCTargetE));
 
 	
 	always @(posedge clk) begin

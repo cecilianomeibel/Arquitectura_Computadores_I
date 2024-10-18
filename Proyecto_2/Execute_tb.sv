@@ -9,6 +9,7 @@ module Execute_tb();
 	    logic [4:0] RDE;
        logic [18:0] ResultW;
 		 logic Cant_ByteE;
+		 logic [1:0] ForwardA_E, ForwardB_E;  //(Hazard)
        
 		 logic PCSrcM, RegWriteM, MemWriteM;
        logic ResultSrcM;
@@ -34,6 +35,8 @@ module Execute_tb();
 		 .RDE(RDE),
 		 .ResultW(ResultW),
 		 .Cant_ByteE(Cant_ByteE),
+		 .ForwardA_E(ForwardA_E), 
+		 .ForwardB_E(ForwardB_E),  
 		 
 		 .PCSrcM(PCSrcM),
 		 .RegWriteM(RegWriteM),
