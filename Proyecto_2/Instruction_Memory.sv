@@ -11,7 +11,7 @@ module Instruction_Memory(
 		for (i = 0; i < 512; i++) begin
 			ROM[i] = 20'b0;  // Asigna 0 a cada posición de la ROM
 		end
-		$readmemb("memfile.hex",ROM);
+		$readmemb("imemfile.hex",ROM);
 	  
 	end
 

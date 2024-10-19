@@ -50,6 +50,15 @@ module Memory_tb();
 		
 		reset = 1'b1;
 		
+		// Prueba inicial
+		MemWriteM = 1'b0;      //se lee
+		WriteDataM = 19'b0;   // no se va a guardar nada
+		ALUResultM = 19'h0;  //dirección 
+		Cant_ByteM = 1'b1;  // 1 byte
+		cuadrante = 4'h2;
+		
+		#20;
+		
 		//Prueba1
 
 		MemWriteM = 1'b1;    //escribir en memoria

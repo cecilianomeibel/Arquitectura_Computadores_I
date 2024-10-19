@@ -8,8 +8,7 @@ module Data_Memory(
 	output logic [18:0] RD,
 	output logic [7:0] pixel
 ); 
-	//reg [63:0] mem [500:0];   //389 mil aproximadamente, por eso el 2^19
-	
+
 	logic [18:0] address_a;
 	logic [18:0] address_b;
 	logic [1:0] byteena_a;
@@ -37,8 +36,6 @@ module Data_Memory(
 						  
 	assign WD_temp = (~A[0])? WD[15:0]: {WD[7:0], 8'h0};
 					 
-	//assign A_temp = (A[0] && ~WE)? {A[18:1], 1'b0}: A;
-
 	RAM ram(
 		.address_a({1'b0, A[18:1]}),
 		.address_b(19'h0),				// direccion que viene del vga
@@ -55,63 +52,11 @@ module Data_Memory(
 	
 	always @(*) begin
 		
+		// se determina el o los bytes que se deben sacar de memoria (segun la instrucción)
 		RD <= (Cant_Byte && ~A[0])? {3'h0, RD_temp}: 
 				(A[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
 				
-		//assign RD = {2'h0, RD_temp};
-		pixel <= pixel_temp[7:0];
+		pixel <= pixel_temp[7:0]; // pixel buscado por la vga
 	end
-	/*
-	assign RD = (Cant_Byte && ~A[0])? {3'h0, RD_temp}: 
-				(A[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
-				
-	//assign RD = {2'h0, RD_temp};
-	assign pixel = pixel_temp[7:0];
 	
-	*/
 endmodule
-
-
-
-/*
-module Data_Memory(
-	input logic clk,reset,
-	input logic [3:0] cuadrante,
-	input logic [18:0] A,WD,
-	input logic WE,
-	input logic Cant_Byte,
-	output logic [18:0] RD
-); 
-	reg [63:0] mem [500:0];   //389 mil aproximadamente, por eso el 2^19
-	
-	
-	
-	always @ (posedge clk) begin
-	
-		if(WE && Cant_Byte == 1'b0 && ~A[0]) begin          //Tomar 1 byte
-			mem[A[18:1]][7:0] <= WD[7:0];
-			
-		end	 
-		
-		else if(WE && Cant_Byte == 1'b0 && A[0]) begin  //Tomar 1 byte
-			mem[A[18:1]][15:8] <= WD[7:0];
-			
-		end	
-		else if (WE && Cant_Byte == 1'b1) begin
-			mem[A[18:1]] <= WD[15:0];             //Tomar 2 bytes
-		
-		end
-		
-		mem[19'h0] <= {15'h0,cuadrante};
-		
-    end
-
-	assign RD = (~reset) ? 19'd0 : (Cant_Byte)? {3'h0,mem[A[18:1]]}: 
-				(~A[0])? {12'h0,mem[A[18:1]][7:0]}: {12'h0,mem[A[18:1]][15:8]};
-
-	initial begin
-		mem[0] = 16'h0;
-	end
-
-endmodule
-*/
