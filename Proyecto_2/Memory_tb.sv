@@ -47,14 +47,14 @@ module Memory_tb();
 		clk = 0;
 
 		#10;
-
+		
 		reset = 1'b1;
-
+		
 		//Prueba1
 
 		MemWriteM = 1'b1;    //escribir en memoria
 		WriteDataM = 19'heeff;  // lo que se va a guardar
-		ALUResultM = 19'h2;  // dirección
+		ALUResultM = 19'h6;  // dirección
 		Cant_ByteM = 1'b1;   // 2 byte
 		cuadrante = 4'h2;
 
@@ -64,23 +64,66 @@ module Memory_tb();
 
 		MemWriteM = 1'b1;    //escribir en memoria
 		WriteDataM = 19'hccaa;  // lo que se va a guardar
-		ALUResultM = 19'h4;  // dirección
+		ALUResultM = 19'h7;  // dirección
 		Cant_ByteM = 1'b1;   // 2 byte
 		cuadrante = 4'h2;
 
 		#20;
 		
-
+		
 		//Prueba3
 
 		MemWriteM = 1'b0;      //se lee
 		WriteDataM = 19'b0;   // no se va a guardar nada
-		ALUResultM = 19'h4;  //dirección 
+		ALUResultM = 19'h6;  //dirección 
 		Cant_ByteM = 1'b1;  // 1 byte
 		cuadrante = 4'h2;
+		
+		
+		#20;
+		
+		//Prueba4
 
+		MemWriteM = 1'b1;      //se escribe
+		WriteDataM = 19'h00bb;   //se va a guardar
+		ALUResultM = 19'h6;  //dirección 
+		Cant_ByteM = 1'b0;  // 2 byte
+		cuadrante = 4'h2;
+		
+		#20;
+		
+		
+		//Prueba5
+
+		MemWriteM = 1'b0;      //se lee
+		WriteDataM = 19'h00bb;   //no se va a guardar nada
+		ALUResultM = 19'h6;  //dirección 
+		Cant_ByteM = 1'b1;  // 2 byte
+		cuadrante = 4'h2;
+
+		#20;
+		
+		//Prueba6
+
+		MemWriteM = 1'b1;      //se lee
+		WriteDataM = 19'h2;   // se va a guardar
+		ALUResultM = 19'h7;  //dirección 
+		Cant_ByteM = 1'b0;  // 2 byte
+		cuadrante = 4'h2;
+
+		#20;
+		
+		//Prueba7
+
+		MemWriteM = 1'b0;      //se lee
+		WriteDataM = 19'h0;   // no se va a guardar nada
+		ALUResultM = 19'h6;  //dirección 
+		Cant_ByteM = 1'b1;  // 2 byte
+		cuadrante = 4'h2;
+		
+		
 		#40;
-
+		
 
 		$finish;
 

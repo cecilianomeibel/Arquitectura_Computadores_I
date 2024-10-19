@@ -20,40 +20,55 @@ module Data_Memory(
 	logic wren_b;
 	logic [15:0] q_a;
 	logic [15:0] q_b;
-	logic [1:0] bytes_select;
+	logic [1:0] bytes_select_a;
+	logic [1:0] bytes_select_b;
 	
 	// Variables intermedias
 	logic [15:0] RD_temp;
 	logic [15:0] pixel_temp;
 	logic [18:0] A_temp;
+	logic [15:0] WD_temp;
 	
 	// Cant_Byte = 1 --> 2 bytes 
 	// Cant_Byte = 0 --> 1 byte
-	assign bytes_select = (Cant_Byte && ~A[0])? 2'b11: 2'b01;
-	assign A_temp = (A[0] && ~WE)? {A[18:1], 1'b0}: A;
+	assign bytes_select_a = (Cant_Byte && ~A[0])? 2'b11: // Escribir 2 bytes en una direcc. multiplo de 2
+						  (A[0])? 2'b10: // Escribir 2 bytes o 1 en una direcc. no multiplo de 2
+						  2'b01; // Escribir 1 byte en una dirección multiplo de 2
+						  
+	assign WD_temp = (~A[0])? WD[15:0]: {WD[7:0], 8'h0};
+					 
+	//assign A_temp = (A[0] && ~WE)? {A[18:1], 1'b0}: A;
 
 	RAM ram(
-		.address_a(A_temp),
-		.address_b(19'h0),
-		.byteena_a(bytes_select),  // bytes a escribir
+		.address_a({1'b0, A[18:1]}),
+		.address_b(19'h0),				// direccion que viene del vga
+		.byteena_a(bytes_select_a),		// bytes a escribir
 		.byteena_b(2'b01),
 		.clock(clk),
-		.data_a(WD[15:0]),
-		.data_b({12'h0,cuadrante}),
+		.data_a(WD_temp),
+		.data_b({12'h0,cuadrante}),		// no se puede escribir en este puerto pues la vga estará leyendo en puerto B
 		.wren_a(WE),
-		.wren_b(1'b1),
+		.wren_b(1'b0),					// en el puerto B nunca se escribe, solo se lee
 		.q_a(RD_temp),
 		.q_b(pixel_temp)
 	);
 	
-	
-	assign RD = (Cant_Byte && ~A[0])? RD_temp: 
-				(~Cant_Byte && A[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
+	always @(*) begin
+		
+		RD <= (Cant_Byte && ~A[0])? {3'h0, RD_temp}: 
+				(A[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
+				
+		//assign RD = {2'h0, RD_temp};
+		pixel <= pixel_temp[7:0];
+	end
+	/*
+	assign RD = (Cant_Byte && ~A[0])? {3'h0, RD_temp}: 
+				(A[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
 				
 	//assign RD = {2'h0, RD_temp};
 	assign pixel = pixel_temp[7:0];
 	
-
+	*/
 endmodule
 
 

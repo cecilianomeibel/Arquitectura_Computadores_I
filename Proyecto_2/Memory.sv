@@ -21,7 +21,7 @@ module Memory(
 
 	//Registro de Memory
 	reg [44:0] memory_reg;   //RegWriteM,ResultSrcM,RDM,ALUResultM,ReadDataM,
-	  
+	 
 
    //Se instancian los modulos de Memory 
 	Data_Memory data_memory(
