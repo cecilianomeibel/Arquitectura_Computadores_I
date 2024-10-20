@@ -99,7 +99,7 @@ module Execute(
 			execute_reg [1] <= MemWriteE; 
 			execute_reg [2] <= ResultSrcE;
 			execute_reg [7:3] <= RDE; 
-			execute_reg [26:8] <= RD2E; 
+			execute_reg [26:8] <= SrcB_intermedio; 
 			execute_reg [45:27] <= ResultE;
 			execute_reg [46] <= Cant_ByteE;
 		end

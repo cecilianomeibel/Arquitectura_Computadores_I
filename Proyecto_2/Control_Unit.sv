@@ -159,7 +159,7 @@ module Control_Unit (
 		5'b01010:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b000;   //SUM
+			ALUControl = 3'b111;   //ALM
 			ResultSrc = 1'b0;     //00 ALU
 			MemWrite = 1'b1;     
 			Jump = 1'b0;
@@ -173,7 +173,7 @@ module Control_Unit (
 		5'b01011:
 			begin
 			ImmSrc = 2'b00;
-			ALUControl = 3'b000;  //SUM
+			ALUControl = 3'b111;  //ALM
 			ResultSrc = 1'b0;    //00 ALU
 			MemWrite = 1'b1;
 			Jump = 1'b0;

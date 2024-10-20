@@ -3,13 +3,20 @@ module Pipeline_tb();
 
 	logic clk, reset;
 	logic [3:0] cuadrante;
+   logic [18:0] DataAdr_VGA;
+	logic interpolacion;
 	logic [7:0] pixel;
+	logic [15:0] dimensiones;
+	
 
 	Pipeline pipeline(
 		.clk(clk), 
 		.reset(reset),
 		.cuadrante(cuadrante),
-		.pixel(pixel)
+		.DataAdr_VGA(DataAdr_VGA),
+		.interpolacion(interpolacion),
+		.pixel(pixel),
+		.dimensiones(dimensiones)
 	);
 	
 	always begin
@@ -25,6 +32,7 @@ module Pipeline_tb();
 	 
 	 reset = 1'b1;
 	 cuadrante = 4'd10;
+	 interpolacion = 1'b1;
 	 
 	 #500;
 	 $finish;

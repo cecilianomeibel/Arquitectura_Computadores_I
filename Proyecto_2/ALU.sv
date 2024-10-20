@@ -46,7 +46,11 @@ module ALU(
 				3'b110: begin  //TRFI  
                 Result = B;
                 ALUFlags = {Result == 0,(1'b0 ^ B[18]) && (Result[18] ^ B[18]), Result[18]};
-			   end		 
+			   end
+				3'b111: begin  // ALM  
+                Result = A;
+                ALUFlags = {Result == 0,(A[18] ^ 1'b0) && (Result[18] ^ 1'b0), Result[18]};
+            end
             default: begin  // Opcode not implemented
                 Result = 19'bx;
                 ALUFlags = 3'b000;
