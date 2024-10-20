@@ -39,7 +39,7 @@ module Top(
 		.enable_pixel(enable_pixel)
 	);
 	
-	Pipeline(
+	Pipeline pipeline(
 		.clk(vgaclk_25), 
 		.reset(reset),
 		.cuadrante(cuadrante),
