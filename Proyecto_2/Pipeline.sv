@@ -1,8 +1,10 @@
 module Pipeline(
 	input logic clk, reset,
 	input logic [3:0] cuadrante,
-	output logic [7:0] pixel
-
+	input logic [18:0] DataAdr_VGA,
+	input logic interpolacion, 
+	output logic [7:0] pixel,
+	output logic [15:0] dimensiones
 );
 
    //Definición de señales 
@@ -118,6 +120,8 @@ module Pipeline(
 		.clk(clk),
 		.reset(reset),
 		.cuadrante(cuadrante),
+		.DataAdr_VGA(DataAdr_VGA),
+		.interpolacion(interpolacion),
 		.RegWriteM(RegWriteM),
 		.MemWriteM(MemWriteM),
 		.ResultSrcM(ResultSrcM),
@@ -131,7 +135,8 @@ module Pipeline(
 		.Rdw(Rdw), 
 		.ReadDataW(ReadDataW),
 		.ALUResultW(ALUResultW),
-		.pixel(pixel)
+		.pixel(pixel),
+		.dimensiones(dimensiones)
 	);
 	
 	//WriteBack

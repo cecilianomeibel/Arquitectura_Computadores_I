@@ -17,6 +17,8 @@ module Top(
 	logic vgaclk_25;
 	logic [7:0] pixel;
 	logic [15:0] dimensiones;  // tomaran las dimensiones de la imagen
+	logic [18:0] DataAdr_VGA;
+	logic enable_pixel;
 	
 	pll vgapll(
 		.clk(clk_fpga),
@@ -32,19 +34,24 @@ module Top(
 		.horizontal_sync(horizontal_sync),
 		.vertical_sync(vertical_sync),
 		.vga_sync(vga_sync),
-		.vga_blank(vga_blank)
+		.vga_blank(vga_blank),
+		.DataAdr_out(DataAdr_VGA),
+		.enable_pixel(enable_pixel)
 	);
 	
 	Pipeline(
 		.clk(vgaclk_25), 
 		.reset(reset),
 		.cuadrante(cuadrante),
-		.pixel(pixel)
+		.DataAdr_VGA(DataAdr_VGA),
+		.interpolacion(interpolacion),
+		.pixel(pixel),
+		.dimensiones(dimensiones) // ojo
 	);
 	
-	assign r = pixel;
-	assign g = pixel;
-	assign b = pixel;
+	assign r = (enable_pixel)? pixel: 8'h0;
+	assign g = r;
+	assign b = r;
 	assign vgaclk = vgaclk_25;
 	
 endmodule

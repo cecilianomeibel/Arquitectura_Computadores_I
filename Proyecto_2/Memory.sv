@@ -1,7 +1,9 @@
 module Memory(
 	input logic clk,reset,
 	input logic [3:0] cuadrante,
-	input logic RegWriteM,MemWriteM,ResultSrcM,
+	input logic [18:0] DataAdr_VGA,
+	input logic interpolacion,
+	input logic RegWriteM, MemWriteM, ResultSrcM,
 	input logic [4:0]  RDM, 
 	input logic [18:0] WriteDataM, ALUResultM,
 	input logic Cant_ByteM,
@@ -10,7 +12,8 @@ module Memory(
 	output logic [4:0]  Rdw, 
 	output logic [18:0] ReadDataW,
 	output logic [18:0] ALUResultW,
-	output logic [7:0] pixel
+	output logic [7:0] pixel,
+	output logic [15:0] dimensiones
 );
 
 
@@ -28,15 +31,17 @@ module Memory(
 		.clk(clk),
 		.reset(reset),
 		.cuadrante(cuadrante),
+		.DataAdr_VGA(DataAdr_VGA),
+		.interpolacion(interpolacion),
 		.A(ALUResultM),
 		.WD(WriteDataM),
 		.WE(MemWriteM),
 		.Cant_Byte(Cant_ByteM),
 		.RD(ReadDataM),
-		.pixel(pixel)
+		.pixel(pixel),
+		.dimensiones(dimensiones)
 	);
-		 
-		 
+	
 	 // Logica de registros de memory
 	 
     always @(posedge clk or negedge reset) begin
