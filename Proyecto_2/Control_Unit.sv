@@ -145,7 +145,7 @@ module Control_Unit (
 		5'b01001:
 			begin
 			ImmSrc = 2'b10;          //ext 10 de TD
-			ALUControl = 3'b000;    //SUM
+			ALUControl = 3'b110;    //TRFI
 			ResultSrc = 1'b0;      //00 de ALU
 			MemWrite = 1'b0;
 			Jump = 1'b0;

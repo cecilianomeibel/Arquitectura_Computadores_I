@@ -1,3 +1,4 @@
+`timescale 1 ps / 1 ps
 module Pipeline_tb();
 
 	logic clk, reset;
@@ -25,7 +26,7 @@ module Pipeline_tb();
 	 reset = 1'b1;
 	 cuadrante = 4'd10;
 	 
-	 #100;
+	 #500;
 	 $finish;
 	 
 	 end

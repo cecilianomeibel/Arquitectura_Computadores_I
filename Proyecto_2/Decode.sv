@@ -4,7 +4,7 @@ module Decode (
 	input logic [19:0] InstrD,          //Tamaño de instrucción
 	input logic [18:0] ResultW,        //Tamaño de registro
 	input logic [14:0] PCD,
-	input logic [4:0] RdW,            //Son 19 registros, 19 bits es 2^5
+	input logic [4:0] Rdw,            //Son 19 registros, 19 bits es 2^5
 
 	output logic RegWriteE,MemWriteE,JumpE,ALUSrcE,
 	output logic [1:0] BranchE,
@@ -51,7 +51,7 @@ module Decode (
 		.reset(reset),
 		.a1(InstrD[14:10]),   //Rf1 registro fuente1
 		.a2(InstrD[19:15]),  //Rf2 registro fuente2
-		.a3(RdW),           // Señal de WB (en cual se va a escribir)
+		.a3(Rdw),           // Señal de WB (en cual se va a escribir)
 		.wd3(ResultW),
 		.we3(RegWriteW),
 		.rd1(RD1D),

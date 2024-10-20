@@ -8,7 +8,7 @@ module Register_File (
         
 	reg [18:0] Register [19:0];   //Tamaño de registro 19 bits, cant registros 19 (2^5)
 
-	always @(posedge clk) begin
+	always @(negedge clk) begin
 		if(we3 && (a3 != 5'h0) && (a3 != 5'h13)) begin //se definen registros "intocables" el L0 (#0) y PC (#19)
 			Register[a3] <= wd3;
 		end

@@ -7,7 +7,7 @@ module Memory(
 	input logic Cant_ByteM,
 
 	output logic RegWriteW,ResultSrcW,
-	output logic [4:0]  RdW, 
+	output logic [4:0]  Rdw, 
 	output logic [18:0] ReadDataW,
 	output logic [18:0] ALUResultW,
 	output logic [7:0] pixel
@@ -60,7 +60,7 @@ module Memory(
 	assign RegWriteW = memory_reg [0];
 	assign ResultSrcW = memory_reg [1];
 	assign ALUResultW = memory_reg [20:2];
-	assign RdW = memory_reg [25:21];
+	assign Rdw = memory_reg [25:21];
 	assign ReadDataW = memory_reg [44:26];
 
 endmodule

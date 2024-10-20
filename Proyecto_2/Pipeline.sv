@@ -13,7 +13,7 @@ module Pipeline(
 	logic [14:0] PCD;
 	
 	// Etapa Decode
-	logic [4:0] RdW;              //Son 19 registros, 19 bits es 2^5
+	logic [4:0] Rdw;              //Son 19 registros, 19 bits es 2^5
 	logic [18:0] ResultW;        //Tamaño de registro
 
 	logic RegWriteE, MemWriteE, JumpE, ALUSrcE;
@@ -37,7 +37,6 @@ module Pipeline(
 
 	// Etapa Memory
 	logic RegWriteW,ResultSrcW;
-	logic [4:0]  RDW;
 	logic [18:0] ReadDataW;
 	logic [18:0] ALUResultW;
 	
@@ -62,7 +61,7 @@ module Pipeline(
 		.InstrD(InstrD),           //Tamaño de instrucción
 		.ResultW(ResultW),        //Tamaño de registro
 		.PCD(PCD),
-		.RdW(RdW),              //Son 19 registros, 19 bits es 2^5
+		.Rdw(Rdw),              //Son 19 registros, 19 bits es 2^5
 
 		.RegWriteE(RegWriteE),
 		.MemWriteE(MemWriteE),
@@ -129,7 +128,7 @@ module Pipeline(
 
 		.RegWriteW(RegWriteW),
 		.ResultSrcW(ResultSrcW),
-		.RdW(RdW), 
+		.Rdw(Rdw), 
 		.ReadDataW(ReadDataW),
 		.ALUResultW(ALUResultW),
 		.pixel(pixel)
@@ -150,7 +149,8 @@ module Pipeline(
 		.RegWriteM(RegWriteM), 
 		.RegWriteW(RegWriteW),
 		.RDM(RDM), 
-		.RDW(RDW), 
+		
+		.Rdw(Rdw), 
 		.RS1E(RS1E), 
 		.RS2E(RS2E),    
 		.ForwardA_E(ForwardA_E), 
