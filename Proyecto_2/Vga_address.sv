@@ -39,7 +39,7 @@ module Vga_address (
 			DataAdr_out = 19'h2;  // dirección donde estarán las dimensiones de la matriz
 			dimensiones_reg = dimensiones;  // dimensiones imagen original
 			
-			address_temp_out = (interpolacion)? 19'h3D289: 19'h6;
+			address_temp_out = (interpolacion)? 19'd125016: 19'h6;
 			enable_pixel = 1'b0;
 			
 		end
