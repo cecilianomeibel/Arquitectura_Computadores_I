@@ -12,18 +12,8 @@ module Data_Memory(
 	output logic [15:0] dimensiones
 ); 
 
-	logic [18:0] address_a;
-	logic [18:0] address_b;
-	logic [1:0] byteena_a;
-	logic [1:0] byteena_b;
-	logic [15:0] data_a;
-	logic [15:0] data_b;
-	logic wren_a;
-	logic wren_b;
-	logic [15:0] q_a;
-	logic [15:0] q_b;
+	
 	logic [1:0] bytes_select_a;
-	logic [1:0] bytes_select_b;
 	
 	// Variables intermedias
 	logic [15:0] RD_temp;
@@ -50,7 +40,7 @@ module Data_Memory(
 		.address_b(DataAdr_VGA),				// direccion que viene del vga
 		.byteena_a(bytes_select_a),		// bytes a escribir
 		.byteena_b(2'b01),
-		.clock(clk),
+		.clock(~clk),
 		.data_a(WD_temp),
 		.data_b({12'h0,cuadrante}),		// no se puede escribir en este puerto pues la vga estará leyendo en puerto B
 		.wren_a(WE),
@@ -62,11 +52,11 @@ module Data_Memory(
 	always @(*) begin
 		
 		// se determina el o los bytes que se deben sacar de memoria (segun la instrucción)
-		RD <= (Cant_Byte && ~A_temp[0])? {3'h0, RD_temp}: 
-				(A_temp[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
+		RD = (Cant_Byte && ~A_temp[0])? {3'h0, RD_temp}: 
+			 (A_temp[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
 				
-		pixel <= pixel_temp[7:0]; // pixel buscado por la vga
-		dimensiones <= pixel_temp; // cuando se está en el front porch pixel_temp contiene las dimensiones de la img
+		pixel = pixel_temp[7:0]; // pixel buscado por la vga
+		dimensiones = pixel_temp; // cuando se está en el front porch pixel_temp contiene las dimensiones de la img
 		
 	end
 	

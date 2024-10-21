@@ -7,7 +7,9 @@ module Fetch (
 );
 
 	 logic [19:0] InstrF;
-	 logic [14:0] PC_F, PCF,PCPlus1F;
+	 logic [14:0] PCF,PCPlus1F;
+	 logic [18:0] PC_F;
+	 
 	 reg [34:0] fetch_reg;   //InstrF_reg, PCF_reg;
 	 
 	 
@@ -24,7 +26,7 @@ module Fetch (
 	PC pc(
 		.clk(clk),
 		.reset(reset),
-		.pc(PC_F),
+		.pc(PC_F[14:0]),
 		.pc_next(PCF)
 	);
 
