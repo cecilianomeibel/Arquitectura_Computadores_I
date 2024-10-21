@@ -20,21 +20,28 @@ module VgaController(
 	parameter VSYN = 10'd2;
 	parameter VMAX = VACTIVE + VFP + VSYN + VBP;
 	
+	logic [9:0] counter_H_temp;
+	logic [9:0] counter_V_temp;	
+	
+	initial begin
+		counter_H_temp = 10'h0;
+		counter_V_temp = 10'h0;
+	end
 	
 	always @(posedge vgaclk) begin
 	
-		if (counter_H == HMAX) begin
+		if (counter_H_temp == HMAX) begin
 		
-			counter_H = 0;
-			if (counter_V == VMAX) begin
-				counter_V = 0;
+			counter_H_temp <= 0;
+			if (counter_V_temp == VMAX) begin
+				counter_V_temp <= 0;
 			end
 			else begin
-				counter_V = counter_V + 1'b1;
+				counter_V_temp <= counter_V_temp + 1'b1;
 			end
 		end
 		else begin
-			counter_H = counter_H + 1'b1;
+			counter_H_temp <= counter_H_temp + 1'b1;
 		
 		end
 		
@@ -47,5 +54,7 @@ module VgaController(
 	
 	// Force outputs to blacounteHck when outside the legal display area
 	assign vga_blank = (counter_H < HACTIVE) & (counter_V < VACTIVE);
+	assign counter_H = counter_H_temp;
+	assign counter_V = counter_V_temp;
 		
 endmodule

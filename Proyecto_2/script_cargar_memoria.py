@@ -27,4 +27,5 @@ def insertar_datos_en_mif(archivo_txt, archivo_mif):
     print(f"Datos del archivo {archivo_txt} insertados en {archivo_mif} con éxito.")
 
 # Usar la función para insertar los datos de un .txt en un .mif
-insertar_datos_en_mif("imagen_original.txt", "dmemfile.mif")
+#insertar_datos_en_mif("imagen_original.txt", "dmemfile.mif")
+insertar_datos_en_mif("imagen_2bytes.txt", "dmemfile.mif")

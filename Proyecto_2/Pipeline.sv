@@ -139,6 +139,7 @@ module Pipeline(
 		.dimensiones(dimensiones)
 	);
 	
+	
 	//WriteBack
 	Mux_2_1 pc_mux(
 		.a(ALUResultW),
@@ -161,5 +162,6 @@ module Pipeline(
 		.ForwardA_E(ForwardA_E), 
 		.ForwardB_E(ForwardB_E)
 	);
+	
 	
 endmodule

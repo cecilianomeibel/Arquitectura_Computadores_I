@@ -28,7 +28,7 @@ module ALU(
                 ALUFlags = {Result == 0,(A[18] ^ B[18]) && (Result[18] ^ B[18]), Result[18]};
             end
             3'b010: begin  // MULT
-                Result = A * B;
+                Result = A * B;   // OJO
                 ALUFlags = {Result == 0,(A[18] ^ B[18]) && (Result[18] ^ B[18]), Result[18]};
             end
             3'b011: begin  // DIV

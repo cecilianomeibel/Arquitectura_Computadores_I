@@ -36,13 +36,13 @@ module Data_Memory(
 	assign A_temp = (interpolacion)? A: 19'h0;
 					 
 	RAM ram(
-		.address_a({1'b0, A_temp[18:1]}),
-		.address_b(DataAdr_VGA),				// direccion que viene del vga
+		.address_a(A_temp[18:1]),
+		.address_b(DataAdr_VGA[18:1]),				// direccion que viene del vga
 		.byteena_a(bytes_select_a),		// bytes a escribir
 		.byteena_b(2'b01),
 		.clock(~clk),
 		.data_a(WD_temp),
-		.data_b({12'h0,cuadrante}),		// no se puede escribir en este puerto pues la vga estará leyendo en puerto B
+		.data_b(16'h0),		// no se puede escribir en este puerto pues la vga estará leyendo en puerto B
 		.wren_a(WE),
 		.wren_b(1'b0),					// en el puerto B nunca se escribe, solo se lee
 		.q_a(RD_temp),
@@ -55,7 +55,7 @@ module Data_Memory(
 		RD = (Cant_Byte && ~A_temp[0])? {3'h0, RD_temp}: 
 			 (A_temp[0])? {11'h0,RD_temp[15:8]}: {11'h0,RD_temp[7:0]};
 				
-		pixel = pixel_temp[7:0]; // pixel buscado por la vga
+		pixel = (DataAdr_VGA[0])? pixel_temp[15:8]: pixel_temp[7:0]; // pixel buscado por la vga
 		dimensiones = pixel_temp; // cuando se está en el front porch pixel_temp contiene las dimensiones de la img
 		
 	end

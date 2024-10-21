@@ -12,26 +12,26 @@ module Vga_address (
 	logic [15:0] dimensiones_interpolacion_reg = 16'd292;	// se almacena dimension de cuadrante interpolado
 	logic [18:0] address_temp_out;  			 // será un puntero en memoria para que la vga leea los pixeles
 	
-	
 	always @(posedge interpolacion) begin
 	
-		dimensiones_interpolacion_reg = ((dimensiones_reg >> 2)*2'd3) - 2'd2; // dimensiones del cuadrante
+		dimensiones_interpolacion_reg = ((dimensiones_reg >> 2) +(dimensiones_reg >> 2) +(dimensiones_reg >> 2)) - 2'd2; // dimensiones del cuadrante
 	end
 	
 	
-	always @(*) begin
-		  
+	always @(x,y) begin
+		 
+		
 		// condición para mostrar imagen original, interpolación = 0
 		if ((x > 144 && y > 34) && (x < (145 + dimensiones_reg)) && (y < (35 + dimensiones_reg)) && ~interpolacion) begin
-			address_temp_out = address_temp_out + 1'b1;
 			DataAdr_out = address_temp_out;
+			address_temp_out = address_temp_out + 1'b1;
 			enable_pixel = 1'b1;
 			
 		end
 		// condición para mostrar el cuadrante, interpolacion = 1
 		else if ((x > 144 && y > 34) && (x < (145 + dimensiones_interpolacion_reg)) && (y < (35 + dimensiones_interpolacion_reg)) && interpolacion) begin
-			address_temp_out = address_temp_out + 1'b1;
 			DataAdr_out = address_temp_out;
+			address_temp_out = address_temp_out + 1'b1;
 			enable_pixel = 1'b1;
 		
 		end
@@ -39,7 +39,7 @@ module Vga_address (
 			DataAdr_out = 19'h2;  // dirección donde estarán las dimensiones de la matriz
 			dimensiones_reg = dimensiones;  // dimensiones imagen original
 			
-			address_temp_out = (interpolacion)? 19'h3D289: 19'h5;
+			address_temp_out = (interpolacion)? 19'h3D289: 19'h6;
 			enable_pixel = 1'b0;
 			
 		end
@@ -48,6 +48,7 @@ module Vga_address (
 			enable_pixel = 1'b0;
 			DataAdr_out = address_temp_out;
 		end
+		
 	end
 	
 endmodule
